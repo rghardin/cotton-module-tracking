@@ -1,3 +1,48 @@
+### Mercury library installation on raspberry pi 3
+First, make sure you have the required packages
+```bash
+yum install patch libxslt gcc readline-devel python-devel
+```
+or
+```bash
+apt-get install patch xsltproc gcc libreadline-dev python-dev
+```
+
+Both Python 2.x and Python 3.x are supported. To use the Python 3.x you may need to
+install the `python3-dev[evel]` instead of the `python-dev[evel]` packages.
+
+Build the module simply by running
+```bash
+cd python-mercuryapi
+make
+```
+This will download and build the [Mercury API SDK](http://www.thingmagic.com/index.php/manuals-firmware)
+and then it will build the Python module itself.
+
+The `make` command will automatically determine which Python version is installed. If both
+2.x and 3.x are installed, the 3.x takes precedence. To build and install 2.x you need to
+explicitly specify the Python interpreter to use:
+```bash
+sudo make PYTHON=python
+```
+
+Then, install the module by running
+```bash
+sudo make install
+```
+which is a shortcut to running
+```bash
+sudo python setup.py install
+```
+
+To access ports like `/dev/ttyUSB0` as a non-root user you may need to add this
+user to the `dialout` group:
+```bash
+sudo usermod -a -G dialout $USER
+```
+
+
+
 # Python wrapper for the ThingMagic Mercury API
 
 The [ThingMagic Mercury API](http://www.thingmagic.com/mercuryapi) is used to discover,
@@ -201,68 +246,4 @@ Represents a read of an RFID tag:
 
 The string representation (`repr`) of the tag data is its EPC.
 
-
-## Installation
-
-### Windows
-Use the Windows installer for the
-[latest release](https://github.com/gotthardp/python-mercuryapi/releases) and Python 3.6.
-
-To build an installer for other Python releases you need to:
- * Download the latest [Mercury API](http://www.thingmagic.com/mercuryapi), e.g.
-   [mercuryapi-1.29.4.34.zip](http://www.thingmagic.com/images/Downloads/software/mercuryapi-1.29.4.34.zip).
- * Open mercuryapi-1.29.4.34/c/src/api/ltkc_win32/inc/stdint_win32.h and comment (or delete)
-   the block of `typedef` for `int_fast8_t` through `uint_fast64_t` (8 lines)
- * Download [latest pthreads-win32](ftp://sourceware.org/pub/pthreads-win32/dll-latest)
-   binaries (.dll and .lib) for your architecture
- * Obtain Microsoft Visual Studio 2017, including the Python extensions
- * Open the Solution and review the
-   [setup-win.py](https://github.com/gotthardp/python-mercuryapi/blob/master/setup-win.py)
-   * Verify the `mercuryapi` directory
-   * Set `library_dirs` and `data_files` to the pthreads-win32 you downloaded
-   * Set Script Arguments to `bdist_wininst -p win32` (default) or `bdist_wininst -p amd64`
- * Start setup-win.py (without debugging)
-
-### Linux
-First, make sure you have the required packages
-```bash
-yum install patch libxslt gcc readline-devel python-devel
-```
-or
-```bash
-apt-get install patch xsltproc gcc libreadline-dev python-dev
-```
-
-Both Python 2.x and Python 3.x are supported. To use the Python 3.x you may need to
-install the `python3-dev[evel]` instead of the `python-dev[evel]` packages.
-
-Build the module simply by running
-```bash
-cd python-mercuryapi
-make
-```
-This will download and build the [Mercury API SDK](http://www.thingmagic.com/index.php/manuals-firmware)
-and then it will build the Python module itself.
-
-The `make` command will automatically determine which Python version is installed. If both
-2.x and 3.x are installed, the 3.x takes precedence. To build and install 2.x you need to
-explicitly specify the Python interpreter to use:
-```bash
-sudo make PYTHON=python
-```
-
-Then, install the module by running
-```bash
-sudo make install
-```
-which is a shortcut to running
-```bash
-sudo python setup.py install
-```
-
-To access ports like `/dev/ttyUSB0` as a non-root user you may need to add this
-user to the `dialout` group:
-```bash
-sudo usermod -a -G dialout $USER
-```
 
