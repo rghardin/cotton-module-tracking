@@ -1,3 +1,6 @@
+### The mercury library is open source code from Github from contributor gotthardp.
+### This code active RFID associate with GPS and record RFID info with GPS in raspberry pi.
+
 ### Mercury library installation on raspberry pi 3
 First, make sure you have the required packages
 ```bash
